@@ -2,19 +2,20 @@ var express = require("express");
 
 var router = express.Router();
 
-var burger = require("../models/burger.js");
+var burger = require("../models/burger");
 
 router.get("/", function(req, res) {
-    burger.selectAll(function(data) {
-        var hbsObject = {
-            burgers: data
-        };
-        console.log(hbsObject);
-        res.render("index", hbsObject);
+    res.redirect("/burgers");
+});
+
+router.get("/burgers", function(req, res) {
+
+    burger.selectAll(function(burgerData) {
+        res.render("index", { burger_data: burgerData });
     });
 });
 
-router.post("/api/burgers", function(req, res) {
+router.post("/burgers/create", function(req, res) {
     burger.insertOne([
         "burger_name", "devoured",
     ], [
